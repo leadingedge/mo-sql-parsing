@@ -663,7 +663,7 @@ class Formatter:
         acc.append(json["insert"])
 
         if "columns" in json:
-            acc.append(self.sql_list(json))
+            acc.append(self.dispatch(json["columns"]))
         if "values" in json:
             values = json["values"]
             if all(isinstance(row, dict) for row in values):
@@ -684,7 +684,7 @@ class Formatter:
                     acc.append("(" + ", ".join(self._literal(row)) + ")")
 
         else:
-            if json["if exists"]:
+            if "if exists" in json:
                 acc.append("IF EXISTS")
             acc.append(self.dispatch(json["query"]))
         return " ".join(acc)

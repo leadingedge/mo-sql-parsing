@@ -795,7 +795,7 @@ def parser(literal_string, simple_ident, sqlserver=False):
             + keyword("insert").suppress()
             + (
                 flag("overwrite") + keyword("table").suppress()
-                | keyword("into").suppress() + Optional(keyword("table").suppress())
+                | Optional(flag("overwrite")) + keyword("into").suppress() + Optional(keyword("table").suppress())
             )
             + identifier("table")
             + Optional(LB + delimited_list(identifier)("columns") + RB)
