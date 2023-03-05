@@ -181,6 +181,8 @@ class Formatter:
                 return self._join_on(json, prec)
             elif "insert" in json:
                 return self.insert(json, prec)
+            elif "update" in json:
+                return self.update(json, prec)
             elif json.keys() & ordered_query_kwargs:
                 return self.ordered_query(json, prec)
             elif json.keys() & set(unordered_clauses):
@@ -687,6 +689,23 @@ class Formatter:
             if "if exists" in json:
                 acc.append("IF EXISTS")
             acc.append(self.dispatch(json["query"]))
+        return " ".join(acc)
+
+    def update(self, json, prec):
+        acc = ["UPDATE"]
+        acc.append(self.dispatch(json["update"]))
+        acc.append("SET")
+        tables = json["set"]
+        for table in tables:
+            acc.append(self.dispatch(tables[table]))
+
+        if 'from' in json:
+            acc.append("FROM")
+            acc.append(self.dispatch(json["from"]))
+        if 'where' in json:
+            acc.append("WHERE")
+            acc.append(self.dispatch(json["where"]))
+
         return " ".join(acc)
 
 
