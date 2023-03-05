@@ -107,7 +107,7 @@ NUMBER = (keyword("number")("op") + _sizes) / to_json_call
 MAP_TYPE = (
     keyword("map")("op") + LB + delimited_list(simple_types("params")) + RB
 ) / to_json_call
-ARRAY_TYPE = (keyword("array")("op") + LB + simple_types("params") + RB) / to_json_call
+ARRAY_TYPE = (keyword("array")("op") + Optional(LB + simple_types("params") + RB)) / to_json_call
 JSON = Group(keyword("json")("op")) / to_json_call
 
 DATE = keyword("date")
